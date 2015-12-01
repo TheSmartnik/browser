@@ -94,4 +94,23 @@ class AndroidTest < Minitest::Test
     assert @browser.android?
     assert @browser.tv?
   end
+
+  describe 'version range' do
+    setup do
+      @browser = Browser.new
+    end
+
+    test 'int range' do
+      @browser.ua = $ua['ANDROID_KITKAT']
+      assert @browser.android?
+      assert @browser.android? Range.new(4.1, 5.1)
+    end
+
+    test 'string range' do
+      @browser.ua = $ua['ANDROID_LOLLIPOP_51']
+      assert @browser.android?
+      refute @browser.android? Range.new('4.1', '5.0.2')
+      assert @browser.android? Range.new('4.1', '5.1.1')
+    end
+  end
 end

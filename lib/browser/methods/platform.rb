@@ -2,7 +2,9 @@ class Browser
   module Platform
     # Detect if browser is Android.
     def android?(version = nil)
-      !!(ua =~ /Android/ && !opera?) && detect_version?(android_version, version)
+      return unless (ua =~ /Android/ && !opera?)
+      return detect_version_range? android_version, version if version.respond_to? :cover?
+      detect_version?(android_version, version)
     end
 
     # Detect Android version.

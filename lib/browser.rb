@@ -229,6 +229,12 @@ class Browser
     actual_version.to_s.start_with?(expected_version.to_s)
   end
 
+  def detect_version_range?(actual_version, expected_versions_range)
+    return true unless expected_versions_range.respond_to? :cover?
+    string_range = Range.new *expected_versions_range.to_s.split("..")
+    string_range.cover? actual_version.to_s
+  end
+
   def deprecate(message)
     offender = caller[1].to_s[/^(.*?\.rb:\d+).*?$/, 1]
     $stderr << "\n#{message} (called from #{offender})\n"
